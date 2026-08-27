@@ -1,0 +1,7 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Join Community Meeting
+    url: https://calendar.google.com/calendar/u/0?cid=czYzdm9lZmhwNWk5cGZsdGI1cTY3bmdwZXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ
+    about: >
+      Have an informal proposal or idea to discuss? Join our bi-weekly
+      community meetings to share and get feedback from maintainers.

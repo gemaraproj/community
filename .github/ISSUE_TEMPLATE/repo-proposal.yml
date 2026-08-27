@@ -1,0 +1,58 @@
+name: "Repository / Tool Proposal"
+description: "Propose a new repository, SDK, tool, security enhancement, or integration for the Gemara project."
+title: "[Repo Proposal]: "
+labels: ["proposal", "repo-proposal"]
+body:
+  - type: input
+    id: proposal-title
+    attributes:
+      label: Proposal Title
+      description: A concise name for the proposed repository, tool, or integration.
+      placeholder: "e.g., gemara-python-sdk"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: >
+        Describe the proposed repository, tool, or integration. Include its
+        purpose and the value it brings to the Gemara ecosystem.
+      placeholder: "What does this do and why does the community need it?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: proposal-type
+    attributes:
+      label: Proposal Type
+      description: What category best describes this proposal?
+      options:
+        - "New Repository (SDK, toolkit, library)"
+        - "Security Enhancement (governance, CI procedures, badges)"
+        - "Integration (third-party tool or service)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Details
+      description: >
+        Optional. Describe proposed language/framework, key dependencies,
+        licensing considerations, or architectural notes.
+      placeholder: "e.g., Go module, Apache-2.0, depends on protobuf"
+    validations:
+      required: false
+
+  - type: textarea
+    id: related-work
+    attributes:
+      label: Related Work
+      description: >
+        Optional. Links to related issues, discussions, prior art, or external
+        references that provide additional context.
+      placeholder: "e.g., https://github.com/gemaraproj/community/issues/1"
+    validations:
+      required: false

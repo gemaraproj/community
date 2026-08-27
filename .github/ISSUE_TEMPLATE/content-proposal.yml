@@ -1,0 +1,58 @@
+name: "Content Proposal (Blog / Case Study)"
+description: "Propose a blog post, case study, or cross-cutting community initiative for the Gemara project."
+title: "[Content Proposal]: "
+labels: ["proposal", "content-proposal"]
+body:
+  - type: input
+    id: proposal-title
+    attributes:
+      label: Proposal Title
+      description: A concise title for the proposed content.
+      placeholder: "e.g., Gemara adoption at Acme Corp - case study"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Content Description
+      description: >
+        Describe the proposed content, its target audience, and key topics
+        it will cover.
+      placeholder: "What is this content about and who is it for?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: content-type
+    attributes:
+      label: Content Type
+      description: What type of content are you proposing?
+      options:
+        - "Blog Post (e.g., OpenSSF Blog)"
+        - "Case Study"
+        - "Other (describe below)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: collaboration-needs
+    attributes:
+      label: Collaboration Needs
+      description: >
+        Optional. Describe what kind of maintainer insights, review, or
+        collaboration you need for this content.
+      placeholder: "e.g., Need a maintainer to review technical accuracy"
+    validations:
+      required: false
+
+  - type: textarea
+    id: demo-materials
+    attributes:
+      label: Demo Materials
+      description: >
+        Optional. Links to or descriptions of demo materials that could be
+        featured on the project website.
+      placeholder: "e.g., https://example.com/demo-video or attach files"
+    validations:
+      required: false
