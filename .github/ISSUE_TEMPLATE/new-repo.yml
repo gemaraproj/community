@@ -1,0 +1,120 @@
+name: "New Repository Request"
+description: "Request creation of a new repository, or transfer of an existing repository from another organization, into the Gemara GitHub organization."
+title: "[New Repo]: "
+labels: ["proposal", "new-repo"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        ## Before you begin
+
+
+        Adding a repository to the Gemara GitHub organization follows a **formal
+        procedure**. Both **creating a new repository** and **transferring an
+        existing repository from another organization** require maintainer
+        review and approval before any repository is created or moved.
+
+
+        - **New repositories** are created directly within the Gemara GitHub
+          organization once this request is approved by the maintainers.
+
+        - **Transfers** move an existing repository from another organization
+          into the Gemara organization. Transferring a repository from an
+          external project **requires approval and discussion in a Gemara
+          community meeting** before the transfer proceeds. Once approved, the
+          current owner must initiate the transfer, and a Gemara organization
+          owner must accept it. License, existing contributors, open issues,
+          and CI configuration should be reviewed as part of the transfer.
+
+
+        Please complete this request so maintainers can review it during a
+        community meeting or asynchronously.
+
+  - type: input
+    id: repo-name
+    attributes:
+      label: Proposed Repository Name
+      description: The name the repository should have within the Gemara organization.
+      placeholder: "e.g., gemara-python-sdk"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: request-type
+    attributes:
+      label: Request Type
+      description: Are you creating a new repository or transferring an existing one?
+      options:
+        - "Create a new repository within the Gemara organization"
+        - "Transfer an existing repository from another organization"
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose and Scope
+      description: >
+        Describe what the repository is for and the value it brings to the
+        Gemara ecosystem.
+      placeholder: "What does this repository do and why does it belong in Gemara?"
+    validations:
+      required: true
+
+  - type: input
+    id: source-repo
+    attributes:
+      label: Source Repository URL (transfers only)
+      description: >
+        For transfers, provide the current URL of the repository to be moved.
+        Leave blank for new repositories.
+      placeholder: "e.g., https://github.com/some-org/some-repo"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: license
+    attributes:
+      label: License
+      description: >
+        The license the repository uses or will use. Gemara projects typically
+        use Apache-2.0.
+      options:
+        - "Apache-2.0"
+        - "MIT"
+        - "Other (describe in Additional Notes)"
+        - "To be determined"
+    validations:
+      required: true
+
+  - type: input
+    id: maintainers
+    attributes:
+      label: Proposed Maintainers
+      description: GitHub handles of the people who will maintain this repository.
+      placeholder: "e.g., @alice, @bob"
+    validations:
+      required: true
+
+  - type: textarea
+    id: transfer-checklist
+    attributes:
+      label: Transfer Readiness (transfers only)
+      description: >
+        For transfers, confirm the current owner is able to initiate the
+        transfer and note any considerations (existing contributors, open
+        issues/PRs, CI, secrets, or dependencies that need attention).
+      placeholder: >
+        e.g., Current owner @carol can initiate the transfer; repo has 12 open
+        issues and GitHub Actions CI that will need org secrets reconfigured.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Additional Notes
+      description: Optional. Any other context, links, or related discussions.
+      placeholder: "e.g., related to https://github.com/gemaraproj/community/issues/1"
+    validations:
+      required: false
