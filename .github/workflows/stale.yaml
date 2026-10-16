@@ -48,15 +48,46 @@ jobs:
           scope: ${{ github.repository }}
           identity: stale
 
-      - name: Convert newly stale pull requests to draft
+      - name: Convert newly stale pull requests to draft and report
         env:
           GH_TOKEN: ${{ steps.sts.outputs.token }}
           GH_REPO: ${{ github.repository }}
           STALED: ${{ steps.stale.outputs.staled-issues-prs }}
+          CLOSED: ${{ steps.stale.outputs.closed-issues-prs }}
         run: |
-          echo "$STALED" | jq -r '.[] | select(.pull_request != null) | .number' |
-          while read -r pr; do
-            if [ "$(gh pr view "$pr" --json isDraft --jq .isDraft)" = "false" ]; then
-              gh pr ready "$pr" --undo
+          rows=""
+          add_row() { # number, type, title, action
+            echo "#$1 ($2): $4: $3"
+            rows+="| [#$1](https://github.com/$GH_REPO/issues/$1) | $2 | ${3//|/\\|} | $4 |"$'\n'
+          }
+          items() { echo "${1:-[]}" | jq -r '.[] | [(if .pull_request then "PR" else "Issue" end), .number, .title] | @tsv'; }
+
+          while IFS=$'\t' read -r type number title; do
+            action="Marked stale"
+            if [ "$type" = "PR" ]; then
+              if [ "$(gh pr view "$number" --json isDraft --jq .isDraft)" = "false" ]; then
+                gh pr ready "$number" --undo
+                action="Marked stale, converted to draft"
+              else
+                action="Marked stale, already a draft"
+              fi
             fi
-          done
+            add_row "$number" "$type" "$title" "$action"
+          done < <(items "$STALED")
+
+          while IFS=$'\t' read -r type number title; do
+            add_row "$number" "$type" "$title" "Closed"
+          done < <(items "$CLOSED")
+
+          {
+            echo "## Stale run"
+            echo
+            if [ -z "$rows" ]; then
+              echo "No issues or pull requests went stale or closed this run."
+            else
+              echo "| Item | Type | Title | Action |"
+              echo "| --- | --- | --- | --- |"
+              printf '%s' "$rows"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          [ -n "$rows" ] || echo "No issues or pull requests went stale or closed this run."
