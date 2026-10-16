@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write # Label, comment on, and close stale issues
-      pull-requests: write # Label, comment on, close, and convert stale pull requests to draft
+      pull-requests: write # Label, comment on, and close stale pull requests
+      id-token: write # Octo-STS OIDC exchange for the draft conversion token
     steps:
       - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
         with:
@@ -38,9 +39,18 @@ jobs:
           close-issue-message: This issue closed after 74 days without activity.
           close-pr-message: This pull request closed after 44 days without activity.
 
+      # GITHUB_TOKEN cannot call convertPullRequestToDraft, so the draft
+      # conversion uses a short-lived Octo-STS token instead.
+      - name: Get Octo-STS token
+        id: sts
+        uses: octo-sts/action@f603d3be9d8dd9871a265776e625a27b00effe05 # v1.1.1
+        with:
+          scope: ${{ github.repository }}
+          identity: stale
+
       - name: Convert newly stale pull requests to draft
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.sts.outputs.token }}
           GH_REPO: ${{ github.repository }}
           STALED: ${{ steps.stale.outputs.staled-issues-prs }}
         run: |
